@@ -1,0 +1,13 @@
+version: '3'
+services:
+  weather_service:
+    restart: always
+    container_name: weather_service
+    build:
+      context: .
+      dockerfile: build/weather_service.Dockerfile
+    ports:
+      - 8000:8000
+      
+    
+  

@@ -1,0 +1,8 @@
+app:
+    port: 8000
+    serviceName: "weather_service"
+    logPath: "./logs/weather_service.log"
+    envPath: "weather_service/config/.env"
+
+
+    

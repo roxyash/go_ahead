@@ -1,0 +1,126 @@
+basePath: /
+definitions:
+  response.AboutResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  response.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  response.ForecastResponse:
+    properties:
+      city:
+        type: string
+      temp:
+        type: number
+    type: object
+  response.StatusResponse:
+    properties:
+      status:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact:
+    email: '*'
+    name: '*'
+    url: '*'
+  description: Simple weather service
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: '*'
+  title: Weather service
+  version: "1.0"
+paths:
+  /forecast:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Date for which you would like to receive weather data
+        format: RFC3339
+        in: query
+        name: date
+        type: string
+      - description: The city in which you would like to receive weather data
+        format: string
+        in: query
+        name: city
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ForecastResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Forecast
+  /monitoring/about:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.AboutResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: About
+  /monitoring/healthcheck:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.StatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Healthcheck
+swagger: "2.0"
