@@ -15,6 +15,8 @@ func NewResponse(logger zaplogger.Logger) *Response {
 	}
 }
 
+
+// Generate error response method
 func (r *Response) NewErrorResponse(c *gin.Context, statusCode int, message string) {
 	r.logger.Errorf(message)
 	c.AbortWithStatusJSON(statusCode, ErrorResponse{Message: message})

@@ -13,6 +13,8 @@ func NewLocationService() *LocationService {
 	return &LocationService{}
 }
 
+
+// Method for get Geolocation by client ip 
 func (s *LocationService) Get(ip, apiKey string) (string, error) {
 	// URL Location API of api.ipstack
 	locationAPI := "http://api.ipstack.com"

@@ -17,6 +17,7 @@ type IP struct {
 	Query string
 }
 
+// Method for getting local IP user. 
 func (s *IpService) Get() (string, error) {
 	req, err := http.Get("http://ip-api.com/json/")
 	if err != nil {

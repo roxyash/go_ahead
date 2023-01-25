@@ -34,7 +34,6 @@ func main() {
 	if err := initConfig(); err != nil {
 		log.Fatalf("error initializing configs: %s", err.Error())
 	}
-
 	fmt.Println("Initialize zaplogger . . .")
 	logger := zaplogger.NewZapLogger(viper.GetString("app.logPath"), "")
 
@@ -103,6 +102,8 @@ func main() {
 
 }
 
+
+// Func for initialize config with viper. 
 func initConfig() error {
 	viper.AddConfigPath("weather_service/config")
 	viper.SetConfigName("dev")
