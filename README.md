@@ -36,7 +36,7 @@ weather_plan="Free" or "Paid" default was as Free
 
 ## Installation
 
-#### Makefile
+#### Use Makefile for running service
 ```powershell
 make run 
 ```
