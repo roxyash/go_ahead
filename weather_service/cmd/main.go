@@ -12,14 +12,13 @@ import (
 	"github.com/roxyash/go_ahead/pkg/config"
 	"github.com/roxyash/go_ahead/pkg/zaplogger"
 	"github.com/roxyash/go_ahead/weather_service/internal/handler"
+	"github.com/roxyash/go_ahead/weather_service/internal/response"
 	"github.com/roxyash/go_ahead/weather_service/internal/server"
 	"github.com/roxyash/go_ahead/weather_service/internal/service"
-	"github.com/roxyash/go_ahead/weather_service/internal/response"
 	"github.com/spf13/viper"
 )
 
-
-// @title Weather service 
+// @title Weather service
 // @version 1.0
 // @description Simple weather service
 // @termsOfService *
@@ -40,8 +39,35 @@ func main() {
 	logger := zaplogger.NewZapLogger(viper.GetString("app.logPath"), "")
 
 	logger.Infof("Initialize env files. . .")
+
 	if err := godotenv.Load(viper.GetString("app.envPath")); err != nil {
 		logger.Fatalf("error loading env variables: %s", err.Error())
+	}
+
+	logger.Infof("Initialize apikeys . . .")
+
+	if os.Getenv("geolocation_apikey") == "" {
+		logger.Fatalf("error load env = geolacation_apikey, set geolacation_apikey in file weather_service/config/.env")
+	}
+
+	if os.Getenv("free_weather_apikey") == "" {
+		logger.Fatalf("error load env = free_weather_apikey, set free_weather_apikey in file weather_service/config/.env")
+	}
+
+	geolocation_apikey := os.Getenv("geolocation_apikey")
+
+	var weather_apikey string
+	weatherPlan := os.Getenv("weather_plan")
+	switch weatherPlan {
+	case "Paid":
+		if os.Getenv("paid_weather_apikey") == "" {
+			logger.Fatalf("error load env = paid_weather_apikey, set paid_weather_apikey in file weather_service/config/.env")
+		}
+		weather_apikey = os.Getenv("paid_weather_apikey")
+	case "Free":
+		weather_apikey = os.Getenv("free_weather_apikey")
+	default:
+		weather_apikey = os.Getenv("free_weather_apikey")
 	}
 
 	logger.Infof("Initialize packages of service . . .")
@@ -51,8 +77,9 @@ func main() {
 	services := service.NewService()
 
 	handlers := handler.NewHandler(services, response, &config.WeatherServiceConfig{
-		LocationApiKey: os.Getenv("geolocation_apikey"),
-		WeatherApiKey:  os.Getenv("openweathermap_apikey"),
+		LocationApiKey: geolocation_apikey,
+		WeatherApiKey:  weather_apikey,
+		Plan: weatherPlan, 
 	})
 
 	srv := new(server.Server)

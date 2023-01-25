@@ -1,42 +1,65 @@
 package service
 
 import (
-	"fmt"
+	"log"
 	"os"
 	"testing"
 	"time"
 
-	"github.com/golang/mock/gomock"
 	"github.com/joho/godotenv"
-
-	// weather_service\internal\service\weather_test.go
-	mock_service "github.com/roxyash/go_ahead/weather_service/internal/service/mocks"
 )
 
-func TestWeatherService_Get(t *testing.T) {
+func TestGetWeatherFree(t *testing.T) {
 	if err := godotenv.Load("../../config/.env"); err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	// Create a mock Weather service.
-	mockWeather := mock_service.NewMockWeather(ctrl)
-
-	// Set up the expected behavior of the mock service.
-	mockWeather.EXPECT().Get(os.Getenv("openweathermap_apikey"), "Moscow", time.Date(2022, time.June, 1, 0, 0, 0, 0, time.UTC)).
-		Return("20°", nil)
-
-	// Create a new instance of the WeatherService.
-	weatherService := &WeatherService{}
-
-
-	// Call the Get method and check the result.
-	temperature, err := weatherService.Get(os.Getenv("openweathermap_apikey"), "Moscow", time.Date(2022, time.June, 1, 0, 0, 0, 0, time.UTC))
-	if err != nil {
-		t.Errorf("WeatherService.Get returned an error: %v", err)
+	apiKey := os.Getenv("free_weather_apikey")
+	// Arrange
+	service := new(WeatherService)
+	testCases := []struct {
+		name        string
+		apiKey      string
+		city        string
+		date        time.Time
+		temperature string
+		err         string
+	}{
+		{
+			name:        "valid input",
+			apiKey:      apiKey,
+			city:        "New York",
+			date:        time.Date(2023, 1, 25, 0, 0, 0, 0, time.UTC),
+			temperature: "3°",
+			err:         "",
+		},
+		{
+			name:        "invalid api key",
+			apiKey:      "invalid_api_key",
+			city:        "New York",
+			date:        time.Date(2023, 1, 25, 0, 0, 0, 0, time.UTC),
+			temperature: "",
+			err:         "API key has been disabled.",
+		},
+		{
+			name:        "no data for specific date",
+			apiKey:      apiKey,
+			city:        "New York",
+			date:        time.Date(2000, 1, 25, 0, 0, 0, 0, time.UTC),
+			temperature: "",
+			err:         "no data found for specific date",
+		},
 	}
-	if temperature != "20°" {
-		t.Errorf("WeatherService.Get returned the wrong temperature: got %s, want %s", temperature, "20°")
+
+	// Act and Assert
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			temperature, err := service.GetWeatherFree(tc.apiKey, tc.city, tc.date)
+			if err != nil && err.Error() != tc.err {
+				t.Errorf("Expected error %s, but got %s", tc.err, err)
+			}
+			if temperature != tc.temperature {
+				t.Errorf("Expected temperature %s, but got %s", tc.temperature, temperature)
+			}
+		})
 	}
 }

@@ -39,6 +39,8 @@ func NewHandler(service *service.Service, response *response.Response, cfg *conf
 	return &Handler{service: service, response: response, cfg: cfg}
 }
 
+
+// Method for initialize routes with handlers. 
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 	router.GET("/swagger", gin.WrapH(http.RedirectHandler("/swagger/index.html", http.StatusMovedPermanently)))

@@ -22,7 +22,8 @@ func (h *Handler) forecast(c *gin.Context) {
 	dateStr := c.Query("date")
 	var date time.Time
 	if dateStr == "" {
-		date = time.Now()
+		now := time.Now()
+		date = time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
 	} else {
 		var err error
 		date, err = time.Parse("2006-01-02", dateStr)
@@ -53,10 +54,29 @@ func (h *Handler) forecast(c *gin.Context) {
 		}
 	}
 
-	temp, err := h.service.Weather.Get(h.cfg.WeatherApiKey, city, date)
-	if err != nil {
-		h.response.NewErrorResponse(c, http.StatusInternalServerError, fmt.Sprintf("Error getting weather forecast: %v", err))
-		return
+	var temp string
+	var err error
+
+	switch h.cfg.Plan {
+	case "Free":
+		temp, err = h.service.Weather.GetWeatherFree(h.cfg.WeatherApiKey, city, date)
+		if err != nil {
+			h.response.NewErrorResponse(c, http.StatusInternalServerError, fmt.Sprintf("Error getting weather forecast: %v", err))
+			return
+		}
+	case "Paid":
+		temp, err = h.service.Weather.GetOpenWeatherPaid(h.cfg.WeatherApiKey, city, date)
+		if err != nil {
+			h.response.NewErrorResponse(c, http.StatusInternalServerError, fmt.Sprintf("Error getting weather forecast: %v", err))
+			return
+		}
+	default:
+		temp, err = h.service.Weather.GetWeatherFree(h.cfg.WeatherApiKey, city, date)
+		if err != nil {
+			h.response.NewErrorResponse(c, http.StatusInternalServerError, fmt.Sprintf("Error getting weather forecast: %v", err))
+			return
+		}
+
 	}
 
 	c.JSON(http.StatusOK, response.ForecastResponse{

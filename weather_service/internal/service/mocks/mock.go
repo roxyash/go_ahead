@@ -34,19 +34,49 @@ func (m *MockWeather) EXPECT() *MockWeatherMockRecorder {
 	return m.recorder
 }
 
-// Get mocks base method.
-func (m *MockWeather) Get(apiKey, city string, date time.Time) (string, error) {
+// GetOpenWeatherFree mocks base method.
+func (m *MockWeather) GetOpenWeatherFree(apiKey, city string, date time.Time) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Get", apiKey, city, date)
+	ret := m.ctrl.Call(m, "GetOpenWeatherFree", apiKey, city, date)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Get indicates an expected call of Get.
-func (mr *MockWeatherMockRecorder) Get(apiKey, city, date interface{}) *gomock.Call {
+// GetOpenWeatherFree indicates an expected call of GetOpenWeatherFree.
+func (mr *MockWeatherMockRecorder) GetOpenWeatherFree(apiKey, city, date interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockWeather)(nil).Get), apiKey, city, date)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOpenWeatherFree", reflect.TypeOf((*MockWeather)(nil).GetOpenWeatherFree), apiKey, city, date)
+}
+
+// GetOpenWeatherPaid mocks base method.
+func (m *MockWeather) GetOpenWeatherPaid(apiKey, city string, date time.Time) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetOpenWeatherPaid", apiKey, city, date)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetOpenWeatherPaid indicates an expected call of GetOpenWeatherPaid.
+func (mr *MockWeatherMockRecorder) GetOpenWeatherPaid(apiKey, city, date interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOpenWeatherPaid", reflect.TypeOf((*MockWeather)(nil).GetOpenWeatherPaid), apiKey, city, date)
+}
+
+// GetWeatherFree mocks base method.
+func (m *MockWeather) GetWeatherFree(apiKey, city string, date time.Time) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWeatherFree", apiKey, city, date)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWeatherFree indicates an expected call of GetWeatherFree.
+func (mr *MockWeatherMockRecorder) GetWeatherFree(apiKey, city, date interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWeatherFree", reflect.TypeOf((*MockWeather)(nil).GetWeatherFree), apiKey, city, date)
 }
 
 // MockLocation is a mock of Location interface.

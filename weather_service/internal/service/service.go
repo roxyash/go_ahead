@@ -4,7 +4,9 @@ import "time"
 
 //go:generate mockgen -source=service.go -destination=mocks/mock.go
 type Weather interface {
-	Get(apiKey, city string, date time.Time) (string, error)
+	GetOpenWeatherFree(apiKey, city string, date time.Time) (string, error)
+	GetWeatherFree(apiKey, city string, date time.Time) (string, error)
+	GetOpenWeatherPaid(apiKey, city string, date time.Time) (string, error)
 }
 
 type Location interface {

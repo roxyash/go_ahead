@@ -19,6 +19,7 @@ Method for checking the life of a service
 Before starting the application, you need to get `YOUR` keys in the services:
 1. https://openweathermap.org/api (To determine the weather)
 2. https://ipstack.com/ (For geolocation)
+3. https://www.weatherapi.com/ (To determine weather) `[FREE]`
 
 After that, add the keys to the .env file along the path `weather_service/config /.env`
 
@@ -27,8 +28,10 @@ The `.env` file was not created because I didn't push it to the repository.
 You need to create it and add two fields there:
 
 ```powershell
-openweathermap_apikey=your_api_key
+paid_weather_apikey=your_api_key
+free_weather_apikey=your_api_key
 geolocation_apikey=your_apikey
+weather_plan="Free" or "Paid" default was as Free
 ```
 
 ## Installation
