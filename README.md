@@ -25,7 +25,7 @@ After that, add the keys to the .env file along the path `weather_service/config
 
 The `.env` file was not created because I didn't push it to the repository.
 
-You need to create it and add two fields there:
+You need to create it and add two four there:
 
 ```powershell
 paid_weather_apikey=your_api_key
